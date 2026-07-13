@@ -1,0 +1,41 @@
+// 1. ШАПКА: НАСТРОЙКИ ПРИЗМЫ
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Строчку url удалили! Теперь Призма берет её из prisma.config.ts
+}
+
+// 2. ENUM: ФИКСИРОВАННЫЕ СПИСКИ
+enum EquipmentCategory {
+  LAPTOP
+  MONITOR
+  KEYBOARD
+  MOUSE
+  PHONE
+  OTHER
+}
+
+enum EquipmentStatus {
+  AVAILABLE // Свободна
+  IN_USE    // Выдана сотруднику
+}
+
+// 3. MODEL: ТАБЛИЦА В БАЗЕ ДАННЫХ
+model Equipment {
+  id           String            @id @default(cuid())
+  name         String
+  serialNumber String            @unique
+  category     EquipmentCategory
+  status       EquipmentStatus   @default(AVAILABLE)
+
+  // Поля аренды (с вопросительным знаком)
+  assignedTo   String?
+  issuedAt     DateTime?
+
+  // Системные даты
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
