@@ -19,19 +19,29 @@ return (
                 )}
 
                 <form action={formAction} className="flex flex-col gap-4">
-                    <input
-                        name="name"
-                        placeholder="Название (например, MacBook)"
-                        required
-                        className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
+                    <div className="flex flex-col gap-1">
+                        <input
+                            name="name"
+                            placeholder="Название (например, MacBook)"
+                            required
+                            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                        {state?.errors?.name && (
+                            <span className="text-red-500 text-xs pl-1">{state.errors.name[0]}</span>
+                        )}
+                    </div>
 
-                    <input
-                        name="serialNumber"
-                        placeholder="Серийный номер"
-                        required
-                        className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
+                    <div className="flex flex-col gap-1">
+                        <input
+                            name="serialNumber"
+                            placeholder="Серийный номер"
+                            required
+                            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                        {state?.errors?.serialNumber && (
+                            <span className="text-red-500 text-xs pl-1">{state.errors.serialNumber[0]}</span>
+                        )}
+                    </div>
 
                     <select
                         name="category"

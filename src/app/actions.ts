@@ -42,20 +42,20 @@ export async function createEquipment(prevState: any, formData: FormData) {
         category: formData.get("category")
     }
 
-    try {
-        const validatedData = equipmentSchema.parse(rawData)
+    const result = equipmentSchema.safeParse(rawData)
 
-        await prisma.equipment.create({
-            data: {
-                name: validatedData.name,
-                serialNumber: validatedData.serialNumber,
-                category: validatedData.category,
-            },
-        })
-    } catch (error) {
+    if (!result.success) {
         return {
-            error: "Ошибка валидации. Проверьте длину полей!",
+            errors: result.error.flatten().fieldErrors
         }
     }
+
+    await prisma.equipment.create({
+        data: {
+            name: result.data.name,
+            serialNumber: result.data.serialNumber,
+            category: result.data.category,
+        }
+    })
     redirect("/")
 }
