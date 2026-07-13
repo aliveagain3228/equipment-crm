@@ -1,54 +1,36 @@
-import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
-import { z } from "zod"
+"use client"
 
-const equipmentSchema = z.object({
-    name: z.string().min(3),
-    serialNumber: z.string().min(5),
-    category: z.enum(["LAPTOP", "MONITOR", "KEYBOARD", "MOUSE"]),
-})
+import { useActionState } from "react";
+import { createEquipment } from "@/app/actions";
 
 export default function AddEquipmentPage() {
-    async function createEquipment(formData: FormData) {
-        "use server"
+    const [state, formAction] = useActionState(createEquipment, null)
 
-        const rawData = {
-            name: formData.get("name"),
-            serialNumber: formData.get("serialNumber"),
-            category: formData.get("category")
-        }
 
-        const validatedData = equipmentSchema.parse(rawData)
-
-        await prisma.equipment.create({
-            data: {
-                name: validatedData.name,
-                serialNumber: validatedData.serialNumber,
-                category: validatedData.category,
-            },
-        })
-
-        redirect("/")
-    }
-
-    return (
+return (
         <main className="min-h-screen bg-gray-50 p-8">
             <div className="max-w-xl mx-auto bg-white rounded-xl shados-sm border border-gray-100 p-6">
                 <h1 className="text-2xl font-bold text-gray-800 mb-6">Добавить технику</h1>
 
-                <form action={createEquipment} className="flex flex-col gap-4">
+                {state?.error && (
+                    <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm font-medium border border-red-100">
+                        {state.error}
+                    </div>
+                )}
+
+                <form action={formAction} className="flex flex-col gap-4">
                     <input
                         name="name"
                         placeholder="Название (например, MacBook)"
                         required
-                        className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:rind-2 focus:ring-green-500"
+                        className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
 
                     <input
                         name="serialNumber"
                         placeholder="Серийный номер"
                         required
-                        className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:rind-2 focus:ring-green-500"
+                        className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
 
                     <select
