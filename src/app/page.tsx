@@ -52,8 +52,17 @@ export default async function DashboardPage() {
                                         action={toggleStatus}
                                     >
                                         <input type="hidden" name="id" value={item.id} />
-                                        <input type="hidden" name="currenStatus" value={item.status} />
+                                        <input type="hidden" name="currentStatus" value={item.status} />
                                         <button className="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded hover:bg-blue-100 transition-colors">
+                                            {item.status === 'AVAILABLE' ? 'Выдать' : 'Вернуть'}
+                                        </button>
+                                    </form>
+
+                                    <form
+                                        action={deleteEquipment}
+                                    >
+                                        <input type="hidden" name="id" value={item.id} />
+                                        <button className="text-sm bg-red-50 text-red-600 px-3 py-1 rounded hover:bg-red-100 transition-colors">
                                             Удалить
                                         </button>
                                     </form>

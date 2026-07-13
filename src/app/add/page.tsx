@@ -1,19 +1,30 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { z } from "zod"
+
+const equipmentSchema = z.object({
+    name: z.string().min(3),
+    serialNumber: z.string().min(5),
+    category: z.enum(["LAPTOP", "MONITOR", "KEYBOARD", "MOUSE"]),
+})
 
 export default function AddEquipmentPage() {
     async function createEquipment(formData: FormData) {
         "use server"
 
-        const name = FormData.get("name") as string
-        const serialNumber = formData.get("serialNumber") as string
-        const category = formData.get("category") as "LAPTOP" | "MONITOR" | "KEYBOARD" | "MOUSE"
+        const rawData = {
+            name: formData.get("name"),
+            serialNumber: formData.get("serialNumber"),
+            category: formData.get("category")
+        }
+
+        const validatedData = equipmentSchema.parse(rawData)
 
         await prisma.equipment.create({
             data: {
-                name,
-                serialNumber,
-                category,
+                name: validatedData.name,
+                serialNumber: validatedData.serialNumber,
+                category: validatedData.category,
             },
         })
 
