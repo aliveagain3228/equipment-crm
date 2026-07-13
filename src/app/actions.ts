@@ -29,10 +29,13 @@ export async function toggleStatus(formData: FormData) {
 }
 
 const equipmentSchema = z.object({
-    name: z.string().min(3),
-    serialNumber: z.string().min(5),
-    category: z.enum(["LAPTOP", "MONITOR", "KEYBOARD", "MOUSE"]),
+    name: z.string().min(3, "Название слишком короткое (минимум 3 символа)"),
+    serialNumber: z.string().min(5, "Серийный номер должен содержать минимум 5 символов"),
+    category: z.enum(["LAPTOP", "MONITOR", "KEYBOARD", "MOUSE"], {
+        errorMap: () => ({ message: "Пожалуйста, выберите категорию из списка"})
 })
+})
+
 
 export async function createEquipment(prevState: any, formData: FormData) {
 
