@@ -1,7 +1,24 @@
 "use client"
 
+import { useFormStatus } from "react-dom";
 import { useActionState } from "react";
 import { createEquipment } from "@/app/actions";
+
+function SubmitButton() {
+    const { pending } = useFormStatus()
+
+    return (
+        <button
+            type="submit"
+            disabled={pending}
+            className={`mt-4 font-semibold p-3 rounded-lg transition-colors text-white ${
+                pending ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
+            }`}
+        >
+            {pending ? "Сохранение..." : "Сохранить в базу"}
+        </button>
+    )
+}
 
 export default function AddEquipmentPage() {
     const [state, formAction] = useActionState(createEquipment, null)
@@ -43,6 +60,8 @@ return (
                         )}
                     </div>
 
+
+
                     <select
                         name="category"
                         className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
@@ -53,12 +72,7 @@ return (
                         <option value="MOUSE">Мышь</option>
                     </select>
 
-                    <button
-                        type="submit"
-                        className="mt-4 bg-green-600 text-white font-semibold p-3 rounded-lg hover:bg-green-700 transition-colors"
-                    >
-                        Сохранить в базу
-                    </button>
+                    <SubmitButton />
                 </form>
             </div>
         </main>
