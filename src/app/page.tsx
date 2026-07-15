@@ -2,9 +2,21 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link"
 import { deleteEquipment, toggleStatus } from "./actions";
 
-export default async function DashboardPage() {
+export default async function DashboardPage(props: {
+    searchParams: Promise<{ query?: string }>
+}) {
+    const searchParams = await props.searchParams
+    const query = searchParams.query || ""
+
     const equipmentList = await prisma.equipment.findMany({
-        orderBy: { createdAt: "desc" },
+        where: {
+            OR: [
+                { name: { contains: query, mode: "insensitive" } },
+                { serialNumber: { contains: query, mode: "insensitive"} },
+            ],
+        },
+
+        orderBy: { createdAt: "desc"}
     })
 
     return (
@@ -12,7 +24,24 @@ export default async function DashboardPage() {
             <div className="max-w-5xl mx-auto">
                 <header className="mb-8 flex justify-between items-center">
                     <h1 className="text-3xl font-bold text-green-800">Учет техники</h1>
-                    
+
+                    <form method="GET" action="/" className="flex gap-2">
+                        <input
+                            type="text"
+                            name="query"
+                            defaultValue={query}
+                            placeholder="Поиск..."
+                            className="border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+
+                        <button
+                            type="submit"
+                            className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                        >
+                            Найти
+                        </button>
+                    </form>
+
                     <Link
                         href="/add"
                         className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors"

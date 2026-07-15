@@ -38,27 +38,23 @@ const equipmentSchema = z.object({
 
 
 export async function createEquipment(prevState: any, formData: FormData) {
-    // 1. Сначала собираем данные
+
     const rawData = {
         name: formData.get("name"),
         serialNumber: formData.get("serialNumber"),
         category: formData.get("category")
     }
 
-    // 2. Мягко проверяем их
     const result = equipmentSchema.safeParse(rawData)
 
-    // 3. Если есть ошибки, отдаем их на клиент
     if (!result.success) {
         return {
             errors: result.error.flatten().fieldErrors
         }
     }
 
-    // 4. ИСКУССТВЕННАЯ ЗАДЕРЖКА 2 СЕКУНДЫ (чтобы увидеть серую кнопку загрузки)
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // 5. Записываем в базу чистые данные
     await prisma.equipment.create({
         data: {
             name: result.data.name,
