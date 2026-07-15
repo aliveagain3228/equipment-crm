@@ -65,3 +65,31 @@ export async function createEquipment(prevState: any, formData: FormData) {
    return { success: true }
 }
 
+export async function updateEquipment(prevState: any, formData: FormData) {
+    const id = formData.get("id") as string
+
+    const rawData = {
+        name: formData.get("name"),
+        serialNumber: formData.get("serialNumber"),
+        category: formData.get("category")
+    }
+
+    const result = equipmentSchema.safeParse(rawData)
+
+    if (!result.success) {
+        return {
+            errors: result.error.flatten().fieldErrors
+        }
+    }
+
+    await prisma.equipment.update({
+        where: { id },
+        data: {
+            name: result.data.name,
+            serialNumber: result.data.serialNumber,
+            category: result.data.category,
+        }
+    })
+    return { success: true }
+}
+

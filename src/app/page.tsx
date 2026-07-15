@@ -77,6 +77,10 @@ export default async function DashboardPage(props: {
                                     </span>
                                 </td>
                                 <td className="p-4 flex gap-2">
+                                    <Link
+                                        href={`/edit/${item.id}`}
+                                        className="text-sm bg-gray-50 text-gray-600 px-3 py-1 rounded hover:bg-gray-200 transition-colors"
+                                        />
                                     <form
                                         action={toggleStatus}
                                     >
