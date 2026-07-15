@@ -3,6 +3,9 @@
 import { useFormStatus } from "react-dom";
 import { useActionState } from "react";
 import { createEquipment } from "@/app/actions";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 function SubmitButton() {
     const { pending } = useFormStatus()
@@ -22,18 +25,19 @@ function SubmitButton() {
 
 export default function AddEquipmentPage() {
     const [state, formAction] = useActionState(createEquipment, null)
+    const router = useRouter()
 
+    useEffect(() => {
+        if (state?.success) {
+            toast.success("Техника успешно добавлена!")
+            router.push("/")
+        }
+    }, [state?.success, router])
 
 return (
         <main className="min-h-screen bg-gray-50 p-8">
-            <div className="max-w-xl mx-auto bg-white rounded-xl shados-sm border border-gray-100 p-6">
+            <div className="max-w-xl mx-auto bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h1 className="text-2xl font-bold text-gray-800 mb-6">Добавить технику</h1>
-
-                {state?.error && (
-                    <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm font-medium border border-red-100">
-                        {state.error}
-                    </div>
-                )}
 
                 <form action={formAction} className="flex flex-col gap-4">
                     <div className="flex flex-col gap-1">

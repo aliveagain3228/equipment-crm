@@ -53,8 +53,6 @@ export async function createEquipment(prevState: any, formData: FormData) {
         }
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
     await prisma.equipment.create({
         data: {
             name: result.data.name,
@@ -64,6 +62,6 @@ export async function createEquipment(prevState: any, formData: FormData) {
     })
 
     // 6. Возвращаемся на главную
-    redirect("/")
+   return { success: true }
 }
 
