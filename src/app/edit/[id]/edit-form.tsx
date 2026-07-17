@@ -1,3 +1,5 @@
+"use client"
+
 import { useFormStatus } from "react-dom";
 import { useActionState, useEffect } from "react";
 import { updateEquipment } from "@/app/actions";
@@ -47,7 +49,7 @@ export default function EditForm({ equipment } : { equipment: any }) {
                     required
                     className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                {state?.erorrs?.name && (
+                {state?.errors?.name && (
                     <span className="text-red-500 text-xs pl-1">{state.errors.name[0]}</span>
                 )}
             </div>

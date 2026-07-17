@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import EditForm from "@/app/edit/[id]/edit-form";
+import EditForm from "./edit-form";
 import { redirect } from "next/navigation";
 
 export default async function EditEquipmentPage(props: {

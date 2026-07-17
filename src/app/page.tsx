@@ -80,7 +80,9 @@ export default async function DashboardPage(props: {
                                     <Link
                                         href={`/edit/${item.id}`}
                                         className="text-sm bg-gray-50 text-gray-600 px-3 py-1 rounded hover:bg-gray-200 transition-colors"
-                                        />
+                                        >
+                                        Редакт.
+                                    </Link>
                                     <form
                                         action={toggleStatus}
                                     >
