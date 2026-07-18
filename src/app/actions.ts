@@ -32,7 +32,7 @@ const equipmentSchema = z.object({
     name: z.string().min(3, "Название слишком короткое (минимум 3 символа)"),
     serialNumber: z.string().min(5, "Серийный номер должен содержать минимум 5 символов"),
     category: z.enum(["LAPTOP", "MONITOR", "KEYBOARD", "MOUSE"], {
-        errorMap: () => ({ message: "Пожалуйста, выберите категорию из списка"})
+        message: "Пожалуйста, выберите категорию из списка"
 })
 })
 
